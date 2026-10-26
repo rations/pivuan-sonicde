@@ -1,0 +1,43 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: arm64
+Codename: excalibur
+Components: main
+Date: Mon, 26 Oct 2026 08:44:17 +0000
+Description: Pivuan SonicDE: The SonicDE desktop for Devuan on the Raspberry Pi
+Label: Pivuan
+Origin: Pivuan
+Suite: excalibur
+MD5Sum:
+ ce6ff4e71405f9c583e9a9093dc0aeb8            11196 main/binary-arm64/Packages
+ f40950e54eac804bc9be117c375d2386             3890 main/binary-arm64/Packages.gz
+ 8f422bfd197b37dd7f3bce0fc9bcfff8             3724 main/binary-arm64/Packages.xz
+SHA1:
+ 83b0d5a92db875c00d0d5ffdfc49ab6f83f896ff            11196 main/binary-arm64/Packages
+ 138b079ee4045ddfe750249e90a49d53aaa5de57             3890 main/binary-arm64/Packages.gz
+ e980175dd1a517f7d8d860bfdce97186138829c7             3724 main/binary-arm64/Packages.xz
+SHA256:
+ 3718c3e8d05827a8c74cbc8122265a12db96974202cd53fbdac58ce67d31dfca            11196 main/binary-arm64/Packages
+ 0a8c8dd8d6b917b0777876f941f723671b31f98462162eca74e389190dbd3b04             3890 main/binary-arm64/Packages.gz
+ d4491063c711c6362230f46d1272242766d9cef852bdd4ab0aaccc0e2ebb6848             3724 main/binary-arm64/Packages.xz
+SHA512:
+ 5a832e86c42b23ccc3734d07f6125b776afd7836b9e4244ba1aa5694534805322d34b1f0d809d8424c00852d86d87bfd297931d302eb133ace293e54def24d6c            11196 main/binary-arm64/Packages
+ 3354fc49516dabc8cf95aab8ccbf3ef154dd80ee4801c7186b3e3d89b23c91998bf5bbf90c2b11dba871c7748a4f456c4aedc24c6210ad89e2c59981d3386a5e             3890 main/binary-arm64/Packages.gz
+ d8e17dd718cd88caa84dabdc2e3dc5910cdf88f1bc762dee10db97b4c7ccf6e733164089d38d098c668a7c3b61bd33d9456698dc7a634637accd5b99c9f0a990             3724 main/binary-arm64/Packages.xz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEENOpPEV2DeTtsgDFVR2mSnyBLGM0FAmrfEuEACgkQR2mSnyBL
+GM2Vzg/+OumehrNCZMs80K+d6hZAAIUiTD082XcR+DBXGge7hbdpYevOUbeasnmo
+rL+TDBuG2u+CEC7p+RSYaSGsu8Uv5jaq5U5H4yN+JsFs80f9Dfhi9xuDP8uaEuB4
+hhSSj8pUTaGwE6brI/n931mnmccRYjuwpPYGCDXfmzkyvrhT1niwRMlsDKNNl+Sa
+FEQ6BURAxbi1rUezV9AsE2hB+HMOYHNSAhi4uWKinyfUQwiFkXOKAmOSH/vJLar8
+MiXuhkglU/4DZ9M3yiW4MdhsV0M0QAiv+9BdeYA9gxMN8mbfeKp1xDeEvko+7+ny
+i0ybUEvTann3ASttjPT4nb4jIarZo78DFlHRfyBUbg1j1dLeAS9U1xREiqH3gyQG
+sri6vjMin4BVyudVtssXzX7F2kj0e0zyDn1WSrUA5V+zMVZhsbrezA+AOGEJvJ6t
+G+eVidlOmkp96D5/aSaDqOdeA/dnJVRMZEUSNNqu23zT7pXQvuZusE2uMsU7iU0N
+TH3+rcf/WkSdOdYBWeV29f41PijfGAu88N2i1K8raoLJF6/yheX5HxaZuwO0nyF8
+s+xpr5bz6GFSVPeMeMVsjpbgbDTJPY/Ul3F/TG/26mamHLIAOT1mhIl1TBYVp71m
+m9Tuo9+97fxR4uHylk8rnSVSQLvvjLzWtUAirOjbKssNe544MXo=
+=6hQi
+-----END PGP SIGNATURE-----

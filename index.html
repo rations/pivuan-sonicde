@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pivuan SonicDE apt repository</title>
+<style>body{font-family:sans-serif;max-width:48rem;margin:2rem auto;padding:0 1rem;line-height:1.5}pre{background:#f3f3f3;padding:.75rem;overflow-x:auto}</style>
+</head><body>
+<h1>Pivuan SonicDE apt repository</h1>
+<p>The SonicDE desktop for <a href="https://github.com/rations/pivuan">Pivuan</a> (Devuan excalibur for the Raspberry Pi, arm64).
+pivuan-config adds it when it installs SonicDE (<code>sudo pivuan-config --cmd SONI01</code>); <code>apt update &amp;&amp; apt upgrade</code> installs the updates.</p>
+<p>Signing key fingerprint: <code>34EA4F115D83793B6C8031554769929F204B18CD</code></p>
+<pre>/etc/apt/sources.list.d/pivuan-sonicde.sources
+Types: deb
+URIs: https://rations.github.io/pivuan-sonicde
+Suites: excalibur
+Components: main
+Signed-By: /usr/share/keyrings/pivuan-archive-keyring.gpg</pre>
+<h2>Packages</h2>
+<ul>
+<li><code>sonicde 6.8.0.4-pivuan1</code></li>
+<li><code>sonicde-apps 6.8.0.4-pivuan1</code></li>
+<li><code>sonicde-frameworks 6.8.0.4-pivuan1</code></li>
+<li><code>sonicde-icons 6.8.0.4-pivuan1</code></li>
+<li><code>sonicde-l10n 6.8.0.4-pivuan1</code></li>
+<li><code>sonicde-qt 6.8.0.4-pivuan1</code></li>
+<li><code>sonicde-wallpapers 6.8.0.4-pivuan1</code></li>
+<li><code>sonicde-workspace 6.8.0.4-pivuan1</code></li>
+</ul>
+</body></html>
