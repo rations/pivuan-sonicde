@@ -1,0 +1,104 @@
+# Publish a SonicDE release to this repository's apt repository (gh-pages,
+# https://rations.github.io/pivuan-sonicde).
+#
+# Nothing is compiled here: the packages are built on a PC (rations/pivuan, sonicde/:
+# build-qt.sh, build-sonicde.sh, package-sonicde.py) and pushed to
+# ghcr.io/rations/pivuan-sonicde/debs:<version> by sonicde/push.sh, which prints the version to
+# give here. This pulls them, checks they are that release, and publishes them with the apt
+# repository scripts of rations/build (branch pivuan, .github/pivuan/), keeping the last 2
+# versions of each package.
+#
+# Needs the secret PIVUAN_APT_SIGNING_KEY in this repository (the same key as in rations/build
+# and rations/pivuan) and the ghcr.io package to be public. The push to gh-pages uses this
+# workflow's own token.
+
+name: Publish SonicDE
+
+# Started by hand only: no push, pull request or schedule triggers.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish, as push.sh printed it (e.g. 6.8.0.4-pivuan1)"
+        type: string
+        required: true
+      build_ref:
+        description: "rations/build branch with the apt repository scripts"
+        type: string
+        default: pivuan
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pivuan-sonicde-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - name: Check the version
+        run: |
+          [[ "${VERSION}" =~ ^[0-9][0-9.]*-pivuan[0-9]+$ ]] \
+            || { echo "::error::not a SonicDE version: ${VERSION}"; exit 1; }
+
+      - name: Apt repository scripts from rations/build
+        uses: actions/checkout@v4
+        with:
+          repository: rations/build
+          ref: ${{ inputs.build_ref || 'pivuan' }}
+          path: build-scripts
+          sparse-checkout: .github/pivuan
+
+      - uses: oras-project/setup-oras@v1
+        with:
+          version: 1.2.0
+
+      - name: Packages from ghcr.io
+        run: |
+          set -euo pipefail
+          oras pull "ghcr.io/rations/pivuan-sonicde/debs:${VERSION}" -o debs \
+            || { echo "::error::ghcr.io/rations/pivuan-sonicde/debs:${VERSION} could not be pulled: pushed with sonicde/push.sh, and the package public?"; exit 1; }
+          # The whole release and only it
+          for pkg in sonicde sonicde-qt sonicde-frameworks sonicde-workspace sonicde-apps \
+              sonicde-icons sonicde-l10n sonicde-wallpapers; do
+            deb=(debs/"${pkg}_${VERSION}"_*.deb)
+            [[ -e "${deb[0]}" ]] || { echo "::error::${pkg} ${VERSION} is missing"; exit 1; }
+            [[ "$(dpkg-deb -f "${deb[0]}" Package) $(dpkg-deb -f "${deb[0]}" Version)" == "${pkg} ${VERSION}" ]] \
+              || { echo "::error::${deb[0]} is not ${pkg} ${VERSION}"; exit 1; }
+          done
+          ls -l debs
+
+      - name: Publish to the apt repository
+        env:
+          SIGNING_KEY: ${{ secrets.PIVUAN_APT_SIGNING_KEY }}
+          REPO_TOKEN: ${{ github.token }}
+          PIVUAN_REPO: ${{ github.repository }}
+          PIVUAN_APT_KEEP: 2
+          PIVUAN_APT_NAME: Pivuan SonicDE
+          PIVUAN_APT_DESCRIPTION: The SonicDE desktop
+          PIVUAN_APT_NOTE: pivuan-config adds it when it installs SonicDE (<code>sudo pivuan-config --cmd SONI01</code>)
+          PIVUAN_APT_URL: https://rations.github.io/pivuan-sonicde
+        run: |
+          set -euo pipefail
+          [[ -n "${SIGNING_KEY}" ]] || { echo "::error::publishing needs the PIVUAN_APT_SIGNING_KEY secret in this repository"; exit 1; }
+          command -v apt-ftparchive > /dev/null || sudo apt-get install -y -q apt-utils
+          export GNUPGHOME="${RUNNER_TEMP}/gnupg"
+          mkdir -m 700 "${GNUPGHOME}"
+          gpg --batch --quiet --import <<< "${SIGNING_KEY}"
+          PIVUAN_APT_SIGNING_KEY_ID="$(gpg --batch --with-colons --list-secret-keys | awk -F: '$1 == "fpr" { print $10; exit }')"
+          [[ -n "${PIVUAN_APT_SIGNING_KEY_ID}" ]] || { echo "::error::PIVUAN_APT_SIGNING_KEY holds no private key"; exit 1; }
+          export PIVUAN_APT_SIGNING_KEY_ID PIVUAN_APT_ACCEPT_ALL=1 PIVUAN_PAGES_LIST="${RUNNER_TEMP}/published.txt"
+          bash build-scripts/.github/pivuan/publish-pages.sh "sonicde-${VERSION}" debs
+          {
+            echo "## Apt repository"
+            echo ""
+            echo '```'
+            cat "${PIVUAN_PAGES_LIST}"
+            echo '```'
+          } >> "${GITHUB_STEP_SUMMARY}"
